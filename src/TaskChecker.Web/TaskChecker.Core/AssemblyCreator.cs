@@ -26,8 +26,9 @@ namespace TaskChecker
 
             var references = new MetadataReference[]
             {
-                MetadataReference.CreateFromFile(typeof(Object).Assembly.Location),
-                MetadataReference.CreateFromFile(typeof(Console).Assembly.Location),
+                MetadataReference.CreateFromFile(typeof(Object).Assembly.Location), // System
+                //MetadataReference.CreateFromFile(typeof(Console).Assembly.Location),
+                MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location), // System.Linq
                 MetadataReference.CreateFromFile(typeof(List<>).Assembly.Location)
             };
 

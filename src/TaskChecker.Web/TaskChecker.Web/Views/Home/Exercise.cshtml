@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Exercise";
     Layout = "../Shared/_Layout.cshtml";
+    var exercise = Model.Exercise;
 }
 
 <div>
@@ -36,28 +37,28 @@
 {
     <input type="hidden" id="ExerciseId" name="ExerciseId" value="@Model.Exercise.Id" />
     <div class="form-group">
-        @Html.LabelFor(model => model.Exercise.IsStatic, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(x => x.Exercise.IsStatic, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             <div class="checkbox">
-                @Html.EditorFor(model => model.Exercise.IsStatic)
-                @Html.ValidationMessageFor(model => model.Exercise.IsStatic, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Exercise.IsStatic, null, "IsStatic")
+                @Html.ValidationMessageFor(model => exercise.IsStatic, "", new { @class = "text-danger" })
             </div>
         </div>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.Exercise.TypeName, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => exercise.TypeName, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.Exercise.TypeName, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Exercise.TypeName, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => exercise.TypeName, null, "TypeName", new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => exercise.TypeName, "", new { @class = "text-danger" })
         </div>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.Exercise.MethodName, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => exercise.MethodName, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.Exercise.MethodName, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Exercise.MethodName, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => exercise.MethodName, null, "MethodName", new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => exercise.MethodName, "", new { @class = "text-danger" })
         </div>
     </div>
     <p>
