@@ -1,0 +1,28 @@
+﻿-- Add roles
+insert into [aspnet-TaskChecker.Web-20180814050004].[dbo].[AspNetRoles] (Id, Name) values (1, 'Admin'), (2, 'Student')
+
+-- Add user roles
+insert into [aspnet-TaskChecker.Web-20180814050004].[dbo].[AspNetUserRoles] (UserId, RoleId) values('3c357cd3-7d9b-4cd3-98c5-c8534b1fc0ff', 1)
+
+-- Add lab works for course
+insert into [aspnet-TaskChecker.Web-20180814050004].[dbo].[LabWorkCourseClasses] (LabWork_Id, CourseClass_Id) values (3, 2)
+
+-- Add Exercise to lab work
+  update [aspnet-TaskChecker.Web-20180814050004].[dbo].[Exercises]
+  set LabWork_Id = 3 
+  where Id = 2
+
+-- Assing ASPUser to student
+  update [aspnet-TaskChecker.Web-20180814050004].[dbo].[Students]
+  set User_Id = '3c357cd3-7d9b-4cd3-98c5-c8534b1fc0ff'
+  where Id = 1
+
+-- Add student to class
+ insert into [aspnet-TaskChecker.Web-20180814050004].[dbo].[StudentCourseClasses]
+  (Student_Id, CourseClass_Id) values
+  (1, 2)
+
+-- Add test for exercise
+  update [aspnet-TaskChecker.Web-20180814050004].[dbo].[ExerciseTests]
+  set Exercise_Id = 2
+  where Id = 1

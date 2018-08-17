@@ -1,0 +1,46 @@
+﻿@model IEnumerable<TaskChecker.Web.Models.Entities.ExerciseTest>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Exercise Tests</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create", "ExerciseTests")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TypeName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsEnabled)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TypeName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsEnabled)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", "ExerciseTests", new { id = item.Id }, null) |
+            @Html.ActionLink("Details", "Details", "ExerciseTests", new { id = item.Id }, null) |
+            @Html.ActionLink("Delete", "Delete", "ExerciseTests", new { id = item.Id }, null)
+        </td>
+    </tr>
+}
+
+</table>

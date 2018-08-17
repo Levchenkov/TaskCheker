@@ -1,0 +1,99 @@
+﻿@model TaskChecker.Web.Models.Entities.Exercise
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Exercise</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Value)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Value)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsStatic)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsStatic)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TypeName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TypeName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MethodName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MethodName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+<h4>Exercise Tests</h4>
+
+<p>
+    @Html.ActionLink("Create New", "Create", "ExerciseTests")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayName("TypeName")
+        </th>
+        <th>
+            @Html.DisplayName("IsEnabled")
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.ExerciseTests) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TypeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsEnabled)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", "ExerciseTests", new { id = item.Id }, null) |
+                @Html.ActionLink("Details", "Details", "ExerciseTests", new { id = item.Id }, null) |
+                @Html.ActionLink("Delete", "Delete", "ExerciseTests", new { id = item.Id }, null)
+            </td>
+        </tr>
+    }
+
+</table>

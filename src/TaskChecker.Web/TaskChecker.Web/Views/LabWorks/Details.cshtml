@@ -1,0 +1,131 @@
+﻿@model TaskChecker.Web.Models.Entities.LabWork
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>LabWork</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsOpened)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsOpened)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DueDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DueDate)
+        </dd>
+
+    </dl>
+</div>
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+<h4>Exercises in this lab work</h4>
+<p>
+    @Html.ActionLink("Create New", "Create", "Exercises")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("Id")
+        </th>
+        <th>
+            @Html.DisplayName("Description")
+        </th>
+        <th>
+            @Html.DisplayName("Value")
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.Exercises) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Value)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", "Exercises", new { id = item.Id }, null) |
+            @Html.ActionLink("Details", "Details", "Exercises", new { id = item.Id }, null) |
+            @Html.ActionLink("Delete", "Delete", "Exercises", new { id = item.Id }, null)
+        </td>
+    </tr>
+    }
+
+</table>
+
+<h4>Classes that can do this lab work</h4>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayName("Description")
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsOpened)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.CourseClasses) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsOpened)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", "CourseClasses", new { id = item.Id }, null) |
+                @Html.ActionLink("Details", "Details", "CourseClasses", new { id = item.Id }, null) |
+                @Html.ActionLink("Delete", "Delete", "CourseClasses", new { id = item.Id }, null)
+            </td>
+        </tr>
+    }
+</table>
