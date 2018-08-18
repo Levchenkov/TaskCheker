@@ -1,4 +1,4 @@
-﻿@model TaskChecker.Web.Models.Entities.LabWork
+﻿@model TaskChecker.Web.Models.LabWorkViewModel
 
 @{
     ViewBag.Title = "Lab Work";
@@ -12,29 +12,35 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.LabWork.Name)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.LabWork.Name)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.IsOpened)
+            @Html.DisplayNameFor(model => model.LabWork.IsOpened)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.IsOpened)
+            @Html.DisplayFor(model => model.LabWork.IsOpened)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.DueDate)
+            @Html.DisplayNameFor(model => model.LabWork.DueDate)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.DueDate)
+            @Html.DisplayFor(model => model.LabWork.DueDate)
         </dd>
+        <dt>
+            @Html.DisplayName("Your Mark")
+        </dt>
 
+        <dd>
+            @(Model.LabWorkResult == null ? 0 : Model.LabWorkResult.Mark)
+        </dd>
     </dl>
 </div>
 
@@ -49,18 +55,27 @@
             @Html.DisplayName("Description")
         </th>
         <th>
-            @Html.DisplayName("Value")
+            @Html.DisplayName("Max Value")
+        </th>
+        <th>
+            @Html.DisplayName("Your Value")
         </th>
         <th></th>
     </tr>
 
-    @foreach (var item in Model.Exercises) {
+    @foreach (var item in Model.LabWork.Exercises) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Value)
+            </td>
+            <td>
+                @{ 
+                    var exerciseResult = Model.LabWorkResult.ExerciseResults.FirstOrDefault(x => x.Exercise.Id == item.Id);
+                }
+                <span>@(exerciseResult == null ? 0 : exerciseResult.Mark)</span>
             </td>
             <td>
                 @Html.ActionLink("Details", "Exercise", "Home", new { id = item.Id }, null)

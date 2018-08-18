@@ -67,11 +67,22 @@ namespace TaskChecker.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            LabWork labWork = db.LabWorks.Find(id);
+            LabWork labWork = db.LabWorks.Include(x => x.Exercises).FirstOrDefault(x => x.Id == id);
             if (labWork == null)
             {
                 return HttpNotFound();
             }
+
+            var selectedExercises = labWork.Exercises.Select(x => x.Id).ToArray();
+
+            var exercises = db.Exercises.Select(x => new
+            {
+                Id = x.Id,
+                Value = x.Name
+            }).ToList();
+
+            ViewBag.Exercises = new MultiSelectList(exercises, "Id", "Value", selectedExercises);
+
             return View(labWork);
         }
 
@@ -80,13 +91,27 @@ namespace TaskChecker.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,IsOpened,DueDate")] LabWork labWork)
+        public ActionResult Edit([Bind(Include = "Id,Name,IsOpened,DueDate")] LabWork labWork, int[] exerciseIds)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(labWork).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+
+                labWork = db.LabWorks.Include(x => x.Exercises).FirstOrDefault(x => x.Id == labWork.Id);
+
+                if (exerciseIds == null)
+                {
+                    labWork.Exercises.Clear();
+                }
+                else
+                {
+                    var selectedExercises = db.Exercises.Where(x => exerciseIds.Contains(x.Id)).ToList();
+                    labWork.Exercises = selectedExercises;
+                }
+                db.SaveChanges();
+                
+                return RedirectToAction("Details", new { labWork.Id });
             }
             return View(labWork);
         }

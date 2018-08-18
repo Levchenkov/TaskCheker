@@ -50,6 +50,7 @@
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+
 <h4>Exercises in this lab work</h4>
 <p>
     @Html.ActionLink("Create New", "Create", "Exercises")
@@ -68,23 +69,23 @@
         <th></th>
     </tr>
 
-    @foreach (var item in Model.Exercises) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Id)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Value)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", "Exercises", new { id = item.Id }, null) |
-            @Html.ActionLink("Details", "Details", "Exercises", new { id = item.Id }, null) |
-            @Html.ActionLink("Delete", "Delete", "Exercises", new { id = item.Id }, null)
-        </td>
-    </tr>
+    @foreach (var item in Model.Exercises)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Value)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", "Exercises", new { id = item.Id }, null) |
+                @Html.ActionLink("Details", "Details", "Exercises", new { id = item.Id }, null)
+            </td>
+        </tr>
     }
 
 </table>
@@ -107,7 +108,8 @@
         <th></th>
     </tr>
 
-    @foreach (var item in Model.CourseClasses) {
+    @foreach (var item in Model.CourseClasses)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Id)
@@ -123,8 +125,7 @@
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", "CourseClasses", new { id = item.Id }, null) |
-                @Html.ActionLink("Details", "Details", "CourseClasses", new { id = item.Id }, null) |
-                @Html.ActionLink("Delete", "Delete", "CourseClasses", new { id = item.Id }, null)
+                @Html.ActionLink("Details", "Details", "CourseClasses", new { id = item.Id }, null)
             </td>
         </tr>
     }

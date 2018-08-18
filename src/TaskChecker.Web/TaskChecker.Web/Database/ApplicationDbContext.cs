@@ -56,6 +56,18 @@ namespace TaskChecker.Web.Database
             set;
         }
 
+        public DbSet<ExerciseResult> ExerciseResults
+        {
+            get;
+            set;
+        }
+
+        public DbSet<LabWorkResult> LabWorkResults
+        {
+            get;
+            set;
+        }
+
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {

@@ -1,12 +1,12 @@
 ﻿@using TaskChecker.Web.Models.Entities
-@model TaskChecker.Web.Models.Entities.Student
+@model TaskChecker.Web.Models.Entities.CourseClass
 
 @{
     ViewBag.Title = "Home Page";
-    var courseClass = Model.Courses.FirstOrDefault();
+    
 }
 
-@if (courseClass == null)
+@if (Model == null)
 {
     <h4>You don have active classes.</h4>
 }
@@ -27,7 +27,7 @@ else
             <th></th>
         </tr>
 
-        @foreach (LabWork item in courseClass.LabWorks)
+        @foreach (LabWork item in Model.LabWorks)
         {
             <tr>
                 <td>

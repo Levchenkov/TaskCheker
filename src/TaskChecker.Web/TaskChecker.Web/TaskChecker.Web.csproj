@@ -306,19 +306,30 @@
     <Compile Include="Migrations\201808171408217_AddExerciseToSubmission.Designer.cs">
       <DependentUpon>201808171408217_AddExerciseToSubmission.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808181133219_AddNameForExercise.cs" />
+    <Compile Include="Migrations\201808181133219_AddNameForExercise.Designer.cs">
+      <DependentUpon>201808181133219_AddNameForExercise.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808181205310_AddExerciseAndLabWorkResults.cs" />
+    <Compile Include="Migrations\201808181205310_AddExerciseAndLabWorkResults.Designer.cs">
+      <DependentUpon>201808181205310_AddExerciseAndLabWorkResults.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Database\ApplicationDbContext.cs" />
     <Compile Include="Models\Entities\CourseClass.cs" />
     <Compile Include="Models\Entities\Exercise.cs" />
+    <Compile Include="Models\Entities\ExerciseResult.cs" />
     <Compile Include="Models\Entities\ExerciseTest.cs" />
     <Compile Include="Models\Entities\ExerciseTestResult.cs" />
     <Compile Include="Models\Entities\LabWork.cs" />
+    <Compile Include="Models\Entities\LabWorkResult.cs" />
     <Compile Include="Models\Entities\Student.cs" />
     <Compile Include="Models\Entities\Submission.cs" />
     <Compile Include="Models\Entities\SubmittedContent.cs" />
     <Compile Include="Models\ExerciseViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\LabWorkViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -449,6 +460,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808171408217_AddExerciseToSubmission.resx">
       <DependentUpon>201808171408217_AddExerciseToSubmission.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808181133219_AddNameForExercise.resx">
+      <DependentUpon>201808181133219_AddNameForExercise.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808181205310_AddExerciseAndLabWorkResults.resx">
+      <DependentUpon>201808181205310_AddExerciseAndLabWorkResults.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

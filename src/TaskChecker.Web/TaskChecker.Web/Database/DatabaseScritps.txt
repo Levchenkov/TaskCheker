@@ -7,10 +7,6 @@ insert into [dbo].[AspNetUserRoles] (UserId, RoleId) values('8c700e27-3e58-4bdc-
 -- Add lab works for course
 insert into [dbo].[LabWorkCourseClasses] (LabWork_Id, CourseClass_Id) values (1, 1)
 
--- Add Exercise to lab work
-  update [dbo].[Exercises]
-  set LabWork_Id = 1
-  where Id = 1
 
 -- Assing ASPUser to student
   update [dbo].[Students]
@@ -22,7 +18,6 @@ insert into [dbo].[LabWorkCourseClasses] (LabWork_Id, CourseClass_Id) values (1,
   (Student_Id, CourseClass_Id) values
   (1, 1)
 
--- Add test for exercise
-  update [dbo].[ExerciseTests]
-  set Exercise_Id = 1
-  where Id = 1
+todo
+/LabWork/Results/1
+/Exercise/Results/1

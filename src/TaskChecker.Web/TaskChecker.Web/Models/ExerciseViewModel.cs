@@ -11,6 +11,12 @@ namespace TaskChecker.Web.Models
             set;
         }
 
+        public ExerciseResult ExerciseResult
+        {
+            get;
+            set;
+        }
+
         public IEnumerable<Submission> Submissions
         {
             get;

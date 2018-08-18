@@ -19,7 +19,7 @@ namespace TaskChecker.Web.Controllers
         // GET: Exercises
         public ActionResult Index()
         {
-            return View(db.Exercises.ToList());
+            return View(db.Exercises.Include(x => x.ExerciseTests).ToList());
         }
 
         // GET: Exercises/Details/5
@@ -48,7 +48,7 @@ namespace TaskChecker.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Description,Value,IsStatic,TypeName,MethodName")] Exercise exercise)
+        public ActionResult Create([Bind(Include = "Id,Name,Description,Value,IsStatic,TypeName,MethodName")] Exercise exercise)
         {
             if (ModelState.IsValid)
             {
@@ -72,6 +72,17 @@ namespace TaskChecker.Web.Controllers
             {
                 return HttpNotFound();
             }
+
+            var selectedTests = exercise.ExerciseTests.Select(x => x.Id).ToArray();
+
+            var exerciseTests = db.ExerciseTests.Select(x => new
+            {
+                Id = x.Id,
+                Value = x.TypeName
+            }).ToList();
+
+            ViewBag.ExerciseTests = new MultiSelectList(exerciseTests, "Id", "Value", selectedTests);
+
             return View(exercise);
         }
 
@@ -80,13 +91,29 @@ namespace TaskChecker.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Description,Value,IsStatic,TypeName,MethodName")] Exercise exercise)
+        public ActionResult Edit(
+            [Bind(Include = "Id,Name,Description,Value,IsStatic,TypeName,MethodName")] Exercise exercise, 
+            int[] exerciseTestIds)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(exercise).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+
+                exercise = db.Exercises.Include(x => x.ExerciseTests).FirstOrDefault(x => x.Id == exercise.Id);
+
+                if(exerciseTestIds == null)
+                {
+                    exercise.ExerciseTests.Clear();
+                }
+                else
+                {
+                    var selectedTests = db.ExerciseTests.Where(x => exerciseTestIds.Contains(x.Id)).ToList();
+                    exercise.ExerciseTests = selectedTests;
+                }
+                db.SaveChanges();
+
+                return RedirectToAction("Details", new { exercise.Id });
             }
             return View(exercise);
         }

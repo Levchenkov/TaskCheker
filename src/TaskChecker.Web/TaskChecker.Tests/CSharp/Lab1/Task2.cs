@@ -21,7 +21,7 @@ namespace TaskChecker.Tests.CSharp.Lab1
             rawResult.Should().BeOfType<List<int>>();
 
             var result = (List<int>)rawResult;
-            result.Should().ContainInOrder(1, 2, 3);
+            result.Should().ContainInOrder(3, 2, 1);
         }
     }
 }

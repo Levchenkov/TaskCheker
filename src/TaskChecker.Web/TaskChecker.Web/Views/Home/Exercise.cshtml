@@ -19,13 +19,20 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Exercise.Value)
+            @Html.DisplayName("Max Mark")
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Exercise.Value)
         </dd>
 
+        <dt>
+            @Html.DisplayName("Your Mark")
+        </dt>
+
+        <dd>
+            @(Model.ExerciseResult == null ? 0 : Model.ExerciseResult.Mark)
+        </dd>
     </dl>
 </div>
 <p>
