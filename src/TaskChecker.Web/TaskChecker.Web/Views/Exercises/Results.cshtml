@@ -1,0 +1,47 @@
+﻿@model IEnumerable<TaskChecker.Web.Models.Entities.ExerciseResult>
+
+@{
+    ViewBag.Title = "Results";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Exercise Results</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayName("Submission Id")
+        </th>
+        <th>
+            @Html.DisplayName("Student")
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Mark)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Submission.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Student.FullName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Mark)
+        </td>
+    </tr>
+}
+
+</table>
+
+<p>
+    @Html.ActionLink("Go Back", "Details", new { id = ViewBag.ExerciseId }) |
+</p>

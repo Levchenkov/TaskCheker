@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace TaskChecker.Web.Models.Entities
 {
@@ -11,6 +12,7 @@ namespace TaskChecker.Web.Models.Entities
             set;
         }
 
+        [Required]
         public string Name
         {
             get;

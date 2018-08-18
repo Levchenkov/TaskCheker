@@ -22,6 +22,14 @@ namespace TaskChecker.Web.Controllers
             return View(db.Exercises.Include(x => x.ExerciseTests).ToList());
         }
 
+        public ActionResult Results(int id)
+        {
+            ViewBag.ExerciseId = id;
+            var results = db.ExerciseResults.Include(x => x.Student).Include(x => x.Submission).Where(x => x.Exercise.Id == id);
+
+            return View(results);
+        }
+
         // GET: Exercises/Details/5
         public ActionResult Details(int? id)
         {

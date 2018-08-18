@@ -22,6 +22,14 @@ namespace TaskChecker.Web.Controllers
             return View(db.LabWorks.ToList());
         }
 
+        public ActionResult Results(int id)
+        {
+            ViewBag.LabWorkId = id;
+            var results = db.LabWorkResults.Include(x => x.Student).Where(x => x.LabWork.Id == id);
+
+            return View(results);
+        }
+
         // GET: LabWorks/Details/5
         public ActionResult Details(int? id)
         {

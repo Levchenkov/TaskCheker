@@ -18,6 +18,7 @@ insert into [dbo].[LabWorkCourseClasses] (LabWork_Id, CourseClass_Id) values (1,
   (Student_Id, CourseClass_Id) values
   (1, 1)
 
-todo
-/LabWork/Results/1
-/Exercise/Results/1
+  todo:
+Home/Index should contains set of course classes instead of labs
+remove standard mvc methods
+didn't recount mark for exercise and lab work

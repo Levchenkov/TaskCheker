@@ -1,15 +1,24 @@
 ﻿@model TaskChecker.Web.Models.ExerciseViewModel
 
 @{
+    /**/
+
     ViewBag.Title = "Exercise";
     Layout = "../Shared/_Layout.cshtml";
     var exercise = Model.Exercise;
 }
 
 <div>
-    <h4>Exercise</h4>
+    <h2>Exercise</h2>
     <hr />
     <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Exercise.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Exercise.Name)
+        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Exercise.Description)
         </dt>
@@ -39,42 +48,79 @@
     @Html.ActionLink("Back to Lab Work", "LabWork", "Home", new { Id = Model.Exercise.LabWork.Id }, null)
 </p>
 
-<h3>Submit Answer:</h3>
+<h4>You can Submit Answer below:</h4>
 @using (Html.BeginForm("ExerciseSubmission", "Home", FormMethod.Post))
 {
-    <input type="hidden" id="ExerciseId" name="ExerciseId" value="@Model.Exercise.Id" />
-    <div class="form-group">
-        @Html.LabelFor(x => x.Exercise.IsStatic, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            <div class="checkbox">
-                @Html.EditorFor(model => model.Exercise.IsStatic, null, "IsStatic")
-                @Html.ValidationMessageFor(model => exercise.IsStatic, "", new { @class = "text-danger" })
+    <div class="form-horizontal">
+        <input type="hidden" id="ExerciseId" name="ExerciseId" value="@Model.Exercise.Id" />
+        <div class="form-group">
+            @Html.LabelFor(x => x.Exercise.IsStatic, "Method is static", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.Exercise.IsStatic, null, "IsStatic")
+                    @Html.ValidationMessageFor(model => exercise.IsStatic, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => exercise.TypeName, "Type Name", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(
+                    model => exercise.TypeName,
+                    null,
+                    "TypeName",
+                    new {
+                        htmlAttributes = new {
+                            @class = "form-control",
+                            data_val = "true",
+                            data_val_required = "The Type Name field is required."
+                        }
+                    })
+                @Html.ValidationMessage("TypeName", "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => exercise.MethodName, "Method Name", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(
+                    model => exercise.MethodName,
+                    null,
+                    "MethodName",
+                    new {
+                        htmlAttributes = new {
+                            @class = "form-control",
+                            data_val = "true",
+                            data_val_required = "The Method Name field is required."
+                        }
+                    })
+                @Html.ValidationMessage("MethodName", "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("Content", "Source Code", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextArea(
+                    "Content",
+                    null,
+                    15,
+                    10,
+                    new {
+                        @class = "form-control",
+                        style = "max-width: none;",
+                        data_val = "true",
+                        data_val_required = "The Source Code field is required."
+                    })
+                @Html.ValidationMessage("Content", "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Send" class="btn btn-primary" />
             </div>
         </div>
     </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => exercise.TypeName, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => exercise.TypeName, null, "TypeName", new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => exercise.TypeName, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => exercise.MethodName, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => exercise.MethodName, null, "MethodName", new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => exercise.MethodName, "", new { @class = "text-danger" })
-        </div>
-    </div>
-    <p>
-        <label>Source Code:</label><br />
-        <textarea name="content"></textarea>
-    </p>
-    <p>
-        <input type="submit" value="Send" />
-    </p>
 }
 
 <h4>Your submissions</h4>
@@ -124,3 +170,7 @@
     }
 
 </table>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

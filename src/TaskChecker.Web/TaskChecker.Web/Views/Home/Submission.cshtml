@@ -9,6 +9,8 @@
 
 @using (Html.BeginForm("Submission", "Home", FormMethod.Post))
 {
+    @Html.HiddenFor(x => x.Id)
+    @Html.Hidden("IsFinal", !Model.IsFinal)
     <div>
         <hr />
         <dl class="dl-horizontal">
@@ -21,7 +23,7 @@
             </dd>
 
             <dt>
-                @Html.DisplayNameFor(model => model.IsTested)
+                @Html.DisplayName("Tested")
             </dt>
 
             <dd>
@@ -29,11 +31,16 @@
             </dd>
 
             <dt>
-                @Html.DisplayNameFor(model => model.IsFinal)
+                @Html.DisplayName("Final")
             </dt>
 
             <dd>
-                @Html.EditorFor(model => model.IsFinal)
+                @Html.DisplayFor(model => model.IsFinal)
+                <input 
+                       type="submit" 
+                       value="@(Model.IsFinal ? "Reset Submission": "Save as Final")" 
+                       class="btn btn-link" 
+                       style="top: -3px; position: relative;"/>
             </dd>
 
             <dt>
@@ -43,12 +50,22 @@
             <dd>
                 @Html.DisplayFor(model => model.Created)
             </dd>
-
             <dt>
-                @Html.DisplayNameFor(model => model.SubmittedContent.Content)
+                <a class="btn btn-link"
+                   style="padding-right: 0; font-weight: bold;"
+                   role="link"
+                   data-toggle="collapse"
+                   href="#collapseCode"
+                   aria-expanded="false"
+                   aria-controls="collapseCode">Source Code</a>
             </dt>
 
-            <dd style="white-space: pre-wrap">@Html.DisplayFor(model => model.SubmittedContent.Content)</dd>
+
+            <dd>
+                <div class="collapse" id="collapseCode">
+                    <div class="well" style="white-space: pre-wrap">@Html.DisplayFor(model => model.SubmittedContent.Content)</div>
+                </div>
+            </dd>
 
         </dl>
 
@@ -76,12 +93,6 @@
 
         </table>
 
-    </div>
-
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Save" class="btn btn-default" />
-        </div>
     </div>
 }
 

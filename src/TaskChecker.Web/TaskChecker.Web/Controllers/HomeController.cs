@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
@@ -141,13 +142,22 @@ namespace TaskChecker.Web.Controllers
 
             var passedTests = submission.TestResults.Count(x => x.IsPassed);
             var totalTests = submission.TestResults.Count;
+            int mark;
+
+            if (totalTests == 0)
+            {
+                mark = 0;
+            }
+            else{
+                mark = (passedTests / totalTests) * submission.Exercise.Value;
+            }
 
             var exerciseResult = new ExerciseResult
             {
                 Exercise = submission.Exercise,
                 Student = submission.Student,
                 Submission = submission,
-                Mark = (passedTests / totalTests) * submission.Exercise.Value
+                Mark = mark
             };
 
             db.ExerciseResults.Add(exerciseResult);
@@ -194,6 +204,13 @@ namespace TaskChecker.Web.Controllers
         [HttpPost, ValidateInput(false)]
         public ActionResult ExerciseSubmission(int exerciseId, string content, bool isStatic, string typeName, string methodName)
         {
+            if (string.IsNullOrEmpty(content) 
+                || string.IsNullOrEmpty(typeName) 
+                || string.IsNullOrEmpty(methodName))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             var exercise = db.Exercises.FirstOrDefault(x => x.Id == exerciseId);
 
             if (exercise == null)
