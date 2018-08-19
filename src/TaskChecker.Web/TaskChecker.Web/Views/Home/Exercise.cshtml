@@ -12,7 +12,7 @@
 
 <div>
     <dl class="dl-horizontal">
-        
+
         <dt>
             @Html.DisplayNameFor(model => model.Exercise.Description)
         </dt>
@@ -21,6 +21,13 @@
             @Html.DisplayFor(model => model.Exercise.Description)
         </dd>
 
+        <dt>
+            @Html.DisplayName("Count Tests")
+        </dt>
+
+        <dd>
+            @Model.Exercise.ExerciseTests.Count
+        </dd>
         <dt>
             @Html.DisplayName("Max Mark")
         </dt>
@@ -42,80 +49,83 @@
     @Html.ActionLink("Back to Lab Work", "LabWork", "Home", new { Id = Model.Exercise.LabWork.Id }, null)
 </p>
 
-<h4>You can Submit Answer below:</h4>
-@using (Html.BeginForm("ExerciseSubmission", "Home", FormMethod.Post))
+@if (Model.Exercise.ExerciseTests.Count > 0)
 {
-    <div class="form-horizontal">
-        <input type="hidden" id="ExerciseId" name="ExerciseId" value="@Model.Exercise.Id" />
-        @*// we can call static method with instance*@
-        @*<div class="form-group">
-            @Html.LabelFor(x => x.Exercise.IsStatic, "Method is static", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.Exercise.IsStatic, null, "IsStatic")
-                    @Html.ValidationMessageFor(model => exercise.IsStatic, "", new { @class = "text-danger" })
+    <h4>You can Submit Answer below:</h4>
+    using (Html.BeginForm("ExerciseSubmission", "Home", FormMethod.Post))
+    {
+        <div class="form-horizontal">
+            <input type="hidden" id="ExerciseId" name="ExerciseId" value="@Model.Exercise.Id" />
+            @*// we can call static method with instance*@
+            @*<div class="form-group">
+                    @Html.LabelFor(x => x.Exercise.IsStatic, "Method is static", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.Exercise.IsStatic, null, "IsStatic")
+                            @Html.ValidationMessageFor(model => exercise.IsStatic, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>*@
+
+            <div class="form-group">
+                @Html.LabelFor(model => exercise.TypeName, "Type Name", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(
+                        model => exercise.TypeName,
+                        null,
+                        "TypeName",
+                        new {
+                            htmlAttributes = new {
+                                @class = "form-control",
+                                data_val = "true",
+                                data_val_required = "The Type Name field is required."
+                            }
+                        })
+                    @Html.ValidationMessage("TypeName", "", new { @class = "text-danger" })
                 </div>
             </div>
-        </div>*@
 
-        <div class="form-group">
-            @Html.LabelFor(model => exercise.TypeName, "Type Name", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(
-                    model => exercise.TypeName,
-                    null,
-                    "TypeName",
-                    new {
-                        htmlAttributes = new {
+            <div class="form-group">
+                @Html.LabelFor(model => exercise.MethodName, "Method Name", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(
+                        model => exercise.MethodName,
+                        null,
+                        "MethodName",
+                        new {
+                            htmlAttributes = new {
+                                @class = "form-control",
+                                data_val = "true",
+                                data_val_required = "The Method Name field is required."
+                            }
+                        })
+                    @Html.ValidationMessage("MethodName", "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.Label("Content", "Source Code", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextArea(
+                        "Content",
+                        null,
+                        15,
+                        10,
+                        new {
                             @class = "form-control",
+                            style = "max-width: none;",
                             data_val = "true",
-                            data_val_required = "The Type Name field is required."
-                        }
-                    })
-                @Html.ValidationMessage("TypeName", "", new { @class = "text-danger" })
+                            data_val_required = "The Source Code field is required."
+                        })
+                    @Html.ValidationMessage("Content", "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Check Answer" class="btn btn-primary" />
+                </div>
             </div>
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => exercise.MethodName, "Method Name", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(
-                    model => exercise.MethodName,
-                    null,
-                    "MethodName",
-                    new {
-                        htmlAttributes = new {
-                            @class = "form-control",
-                            data_val = "true",
-                            data_val_required = "The Method Name field is required."
-                        }
-                    })
-                @Html.ValidationMessage("MethodName", "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.Label("Content", "Source Code", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextArea(
-                    "Content",
-                    null,
-                    15,
-                    10,
-                    new {
-                        @class = "form-control",
-                        style = "max-width: none;",
-                        data_val = "true",
-                        data_val_required = "The Source Code field is required."
-                    })
-                @Html.ValidationMessage("Content", "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Check Answer" class="btn btn-primary" />
-            </div>
-        </div>
-    </div>
+    }
 }
 
 <h4>Your previous answers:</h4>
@@ -129,10 +139,10 @@
             @Html.DisplayName("Created")
         </th>
         <th>
-            @Html.DisplayName("IsTested")
+            @Html.DisplayName("Tested")
         </th>
         <th>
-            @Html.DisplayName("IsFinal")
+            @Html.DisplayName("Final")
         </th>
         <th>
             @Html.DisplayName("Score")
@@ -150,10 +160,10 @@
                 @Html.DisplayFor(modelItem => item.Created)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsTested)
+                @(item.IsTested ? "Yes" : "No")
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsFinal)
+                @(item.IsFinal ? "Yes" : "No")
             </td>
             <td>
                 @($"{item.TestResults.Count(x => x.IsPassed)}/{item.TestResults.Count}")

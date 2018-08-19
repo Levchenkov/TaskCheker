@@ -70,7 +70,7 @@ namespace TaskChecker
             foreach (var invocationSyntax in invocationSyntaxes)
             {
                 var symbolInfo = model.GetSymbolInfo(invocationSyntax);
-                var methodName = $"{symbolInfo.Symbol.ContainingType.ToString()}.{symbolInfo.Symbol.Name}";
+                var methodName = $"{symbolInfo.Symbol?.ContainingType?.ToString()}.{symbolInfo.Symbol?.Name}";
                 if (GetDeprecatedMethods().Contains(methodName))
                 {
                     throw new NotSupportedException($"Method {methodName} is not allowed.");

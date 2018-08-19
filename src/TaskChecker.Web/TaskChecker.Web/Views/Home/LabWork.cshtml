@@ -69,7 +69,7 @@
             </td>
             <td>
                 @{ 
-                    var exerciseResult = Model.LabWorkResult.ExerciseResults.FirstOrDefault(x => x.Exercise.Id == item.Id);
+                    var exerciseResult = Model.LabWorkResult?.ExerciseResults?.FirstOrDefault(x => x.Exercise.Id == item.Id);
                 }
                 <span>@(exerciseResult == null ? 0 : exerciseResult.Mark)</span>
             </td>

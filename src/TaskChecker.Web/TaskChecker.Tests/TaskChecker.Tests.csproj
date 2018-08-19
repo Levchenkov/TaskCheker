@@ -47,6 +47,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CSharp\Lab1\Task2.cs" />
+    <Compile Include="CSharp\Lab2\Task1.cs" />
+    <Compile Include="CSharp\Lab2\Task6.cs" />
+    <Compile Include="CSharp\Lab2\Task5.cs" />
+    <Compile Include="CSharp\Lab2\Task4.cs" />
+    <Compile Include="CSharp\Lab2\Task3.cs" />
+    <Compile Include="CSharp\Lab2\Task2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

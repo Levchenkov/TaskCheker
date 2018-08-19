@@ -36,5 +36,5 @@ insert into [dbo].[LabWorkCourseClasses] (LabWork_Id, CourseClass_Id) values (1,
   static using console +
   alias using console +
   test not found by name: TestRunner:31
-  show that no tests for exercise
+  
   list of not allowed methods and types

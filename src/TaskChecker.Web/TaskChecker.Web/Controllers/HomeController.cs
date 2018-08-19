@@ -57,7 +57,7 @@ namespace TaskChecker.Web.Controllers
 
         public ActionResult Exercise(int id)
         {
-            var exercise = db.Exercises.Include(x => x.LabWork).FirstOrDefault(x => x.Id == id);
+            var exercise = db.Exercises.Include(x => x.LabWork). Include(x => x.ExerciseTests).FirstOrDefault(x => x.Id == id);
             var submissions = db.Submissions.Include(x => x.TestResults).Where(x => x.Exercise.Id == id && x.Student.User.UserName == User.Identity.Name);
 
             if (exercise == null)
@@ -173,7 +173,7 @@ namespace TaskChecker.Web.Controllers
 
         private ExerciseResult AddExerciseResult(Submission submission)
         {
-            var previousExerciseResult = db.ExerciseResults.FirstOrDefault(x => x.Submission.Id == submission.Id);
+            var previousExerciseResult = db.ExerciseResults.FirstOrDefault(x => x.Exercise.Id == submission.Exercise.Id && x.Student.User.UserName == User.Identity.Name);
 
             if (previousExerciseResult != null)
             {
