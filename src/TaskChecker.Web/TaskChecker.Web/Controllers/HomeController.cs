@@ -21,12 +21,17 @@ namespace TaskChecker.Web.Controllers
         public ActionResult Index()
         {
             var currentStudent = db.Students.Include(x => x.Courses).FirstOrDefault(x => x.User.UserName == User.Identity.Name);
+            return View(currentStudent);
+        }
 
-            if (currentStudent == null)
+        public ActionResult CourseClass(int id)
+        {
+            var courseClass = db.CourseClasses.Include(x => x.LabWorks).FirstOrDefault(x => x.Id == id);
+
+            if(courseClass == null)
             {
-                return View((CourseClass)null);
+                return HttpNotFound();
             }
-            var courseClass = currentStudent.Courses.FirstOrDefault();
 
             return View(courseClass);
         }
@@ -39,7 +44,6 @@ namespace TaskChecker.Web.Controllers
             {
                 return HttpNotFound();
             }
-
             var labWorkResult = db.LabWorkResults.FirstOrDefault(x => x.LabWork.Id == labWork.Id && x.Student.User.UserName == User.Identity.Name);
 
             var viewModel = new LabWorkViewModel
@@ -108,10 +112,47 @@ namespace TaskChecker.Web.Controllers
                 var exerciseResult = AddExerciseResult(submission);
                 AddLabWorkResult(exerciseResult);
             }
+            else
+            {
+                RemoveExerciseResult(submission);
+                RecountLabWorkResult(submission);
+            }
 
             db.SaveChanges();
 
             return RedirectToAction("Submission", new {Id = id});
+        }
+
+        private void RemoveExerciseResult(Submission submission)
+        {
+            var exerciseResult = db.ExerciseResults.FirstOrDefault(x => x.Submission.Id == submission.Id);
+
+            if(exerciseResult != null)
+            {
+                db.ExerciseResults.Remove(exerciseResult);
+                db.SaveChanges();
+            }
+        }
+
+        private void RecountLabWorkResult(Submission submission)
+        {
+            var exercise = db
+                .Exercises
+                .Include(x => x.LabWork)
+                .FirstOrDefault(x => x.Id == submission.Exercise.Id);
+
+            if (exercise == null)
+            {
+                throw new NotSupportedException();
+            }
+
+            var labWorkResult = db.LabWorkResults.FirstOrDefault(x => x.LabWork.Id == exercise.LabWork.Id);
+
+            if (labWorkResult != null)
+            {
+                var mark = labWorkResult.ExerciseResults.Select(x => x.Mark).Sum();
+                labWorkResult.Mark = mark;
+            }            
         }
 
         private void ClearFlagForPreviousFinalSubmission(Submission submission)
@@ -137,7 +178,7 @@ namespace TaskChecker.Web.Controllers
             if (previousExerciseResult != null)
             {
                 db.ExerciseResults.Remove(previousExerciseResult);
-                //db.SaveChanges();
+                db.SaveChanges();
             }
 
             var passedTests = submission.TestResults.Count(x => x.IsPassed);

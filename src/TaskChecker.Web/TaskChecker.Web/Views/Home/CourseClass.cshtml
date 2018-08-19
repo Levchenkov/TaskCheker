@@ -1,0 +1,52 @@
+﻿@using TaskChecker.Web.Models.Entities
+@model TaskChecker.Web.Models.Entities.CourseClass
+
+@{
+    ViewBag.Title = "Course Class";
+}
+
+@if (Model.LabWorks == null || Model.LabWorks.Count == 0)
+{
+    <h3>You doesn't have available lab works.</h3>
+}
+else
+{
+    <h3>You have available lab works.</h3>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayName("Name")
+            </th>
+            <th>
+                @Html.DisplayName("IsOpened")
+            </th>
+            <th>
+                @Html.DisplayName("DueDate")
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (LabWork item in Model.LabWorks)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @(item.IsOpened ? "Yes" : "No")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DueDate)
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "LabWork", "Home", new { id = item.Id }, null)
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+
+<p>
+    @Html.ActionLink("Back to Home", "Index", "Home")
+</p>

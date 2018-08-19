@@ -1,46 +1,48 @@
-﻿@using TaskChecker.Web.Models.Entities
-@model TaskChecker.Web.Models.Entities.CourseClass
+﻿@model TaskChecker.Web.Models.Entities.Student
 
 @{
-    ViewBag.Title = "Home Page";
-    
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @if (Model == null)
 {
-    <h4>You don have active classes.</h4>
+    <h3>Hello!</h3>
+    <h4>Your account hasn't been activated yet. Ask your teacher to add you to the system.</h4>
 }
 else
 {
-    <h4>You have available lab works.</h4>
+    <h3>Hello @Model.FullName!</h3>
+    <h4>You have been enrolled in the following courses:</h4>
+
     <table class="table">
         <tr>
             <th>
                 @Html.DisplayName("Name")
             </th>
             <th>
-                @Html.DisplayName("IsOpened")
+                @Html.DisplayName("Description")
             </th>
             <th>
-                @Html.DisplayName("DueDate")
+                @Html.DisplayName("Opened")
             </th>
             <th></th>
         </tr>
 
-        @foreach (LabWork item in Model.LabWorks)
+        @foreach (var item in Model.Courses)
         {
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.IsOpened)
+                    @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.DueDate)
+                    @(item.IsOpened ? "Yes" : "No")
                 </td>
                 <td>
-                    @Html.ActionLink("Details", "LabWork", "Home", new { id = item.Id }, null)
+                    @Html.ActionLink("Details", "CourseClass", "Home", new { id = item.Id }, null)
                 </td>
             </tr>
         }

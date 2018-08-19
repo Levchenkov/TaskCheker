@@ -5,95 +5,94 @@
     Layout = "../Shared/_Layout.cshtml";
 }
 
-<h2>Submission Result</h2>
+<h3>Answer Result</h3>
 
 @using (Html.BeginForm("Submission", "Home", FormMethod.Post))
 {
     @Html.HiddenFor(x => x.Id)
     @Html.Hidden("IsFinal", !Model.IsFinal)
-    <div>
-        <hr />
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.Id)
-            </dt>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
 
-            <dd>
-                @Html.DisplayFor(model => model.Id)
-            </dd>
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
 
-            <dt>
-                @Html.DisplayName("Tested")
-            </dt>
+        <dt>
+            @Html.DisplayName("Tested")
+        </dt>
 
-            <dd>
-                @Html.DisplayFor(model => model.IsTested)
-            </dd>
+        <dd>
+            @(Model.IsTested ? "Yes" : "No")
+        </dd>
 
-            <dt>
-                @Html.DisplayName("Final")
-            </dt>
+        <dt>
+            @Html.DisplayName("Final")
+        </dt>
 
-            <dd>
-                @Html.DisplayFor(model => model.IsFinal)
-                <input 
-                       type="submit" 
-                       value="@(Model.IsFinal ? "Reset Submission": "Save as Final")" 
-                       class="btn btn-link" 
-                       style="top: -3px; position: relative;"/>
-            </dd>
+        <dd>
+            @(Model.IsFinal ? "Yes" : "No")
+            <input type="submit"
+                   value="@(Model.IsFinal ? "Reset Answer": "Mark as Final Answer")"
+                   class="btn btn-link"
+                   style="top: -3px; position: relative;" />
+        </dd>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.Created)
-            </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.Created)
+        </dt>
 
-            <dd>
-                @Html.DisplayFor(model => model.Created)
-            </dd>
-            <dt>
-                <a class="btn btn-link"
-                   style="padding-right: 0; font-weight: bold;"
-                   role="link"
-                   data-toggle="collapse"
-                   href="#collapseCode"
-                   aria-expanded="false"
-                   aria-controls="collapseCode">Source Code</a>
-            </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Created)
+        </dd>
+        <dt>
+            <a class="btn btn-link"
+               style="padding-right: 0; font-weight: bold;"
+               role="link"
+               data-toggle="collapse"
+               href="#collapseCode"
+               aria-expanded="false"
+               aria-controls="collapseCode">Show Source Code</a>
+        </dt>
 
 
-            <dd>
-                <div class="collapse" id="collapseCode">
-                    <div class="well" style="white-space: pre-wrap">@Html.DisplayFor(model => model.SubmittedContent.Content)</div>
-                </div>
-            </dd>
+        <dd>
+            <div class="collapse" id="collapseCode">
+                <div class="well" style="white-space: pre-wrap">@Html.DisplayFor(model => model.SubmittedContent.Content)</div>
+            </div>
+        </dd>
 
-        </dl>
+    </dl>
 
-        <h4>Test execution results:</h4>
-        <table class="table">
+    @Html.ActionLink("Back to Exercise", "Exercise", new { Id = Model.Exercise.Id })
+
+    <h4>Test execution results:</h4>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayName("Test is Passed")
+            </th>
+            <th>
+                @Html.DisplayName("Information")
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model.TestResults)
+        {
             <tr>
-                <th>
-                    @Html.DisplayName("IsPassed")
-                </th>
-                <th>
-                    @Html.DisplayName("Information")
-                </th>
-                <th></th>
+                <td>
+                    @(item.IsPassed ? "Yes" : "No")
+                </td>
+                <td style="white-space: pre-wrap">@Html.DisplayFor(modelItem => item.Information)</td>
             </tr>
+        }
 
-            @foreach (var item in Model.TestResults)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsPassed)
-                    </td>
-                    <td style="white-space: pre-wrap">@Html.DisplayFor(modelItem => item.Information)</td>
-                </tr>
-            }
+    </table>
 
-        </table>
-
-    </div>
+</div>
 }
-
-@Html.ActionLink("Back to Exercise", "Exercise", new {Id = Model.Exercise.Id})

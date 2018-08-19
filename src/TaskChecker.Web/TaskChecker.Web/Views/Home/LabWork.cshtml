@@ -5,30 +5,20 @@
     Layout = "../Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<h3>Lab Work - <strong>@Model.LabWork.Name</strong></h3>
 
 <div>
-    <h4>LabWork</h4>
-    <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.LabWork.Name)
+            @Html.DisplayName("Opened")
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.LabWork.Name)
+            @(Model.LabWork.IsOpened ? "Yes" : "No")
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.LabWork.IsOpened)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.LabWork.IsOpened)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.LabWork.DueDate)
+            @Html.DisplayName("Due Date")
         </dt>
 
         <dd>
@@ -45,26 +35,32 @@
 </div>
 
 <p>
-    @Html.ActionLink("Back to Class", "Index", "Home")
+    @Html.ActionLink("Back to Home", "Index", "Home")
 </p>
 <h4>Exercises in this lab work</h4>
 
 <table class="table">
     <tr>
         <th>
+            @Html.DisplayName("Name")
+        </th>
+        <th>
             @Html.DisplayName("Description")
         </th>
         <th>
-            @Html.DisplayName("Max Value")
+            @Html.DisplayName("Max Mark")
         </th>
         <th>
-            @Html.DisplayName("Your Value")
+            @Html.DisplayName("Your Mark")
         </th>
         <th></th>
     </tr>
 
     @foreach (var item in Model.LabWork.Exercises) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
