@@ -20,12 +20,17 @@ namespace TaskChecker.Core
         {
             var type = assembly.GetType(typeName);
 
+            var results = new List<TestResult>();
             if (type == null)
             {
-                throw new NotSupportedException();
+                results.Add(new TestResult
+                {
+                    IsPassed = false,
+                    Exception = new NotSupportedException($"Test {typeName} not found.")
+                });
+                return results;
             }
 
-            var results = new List<TestResult>();
             var tests = type.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 
             foreach (var test in tests)

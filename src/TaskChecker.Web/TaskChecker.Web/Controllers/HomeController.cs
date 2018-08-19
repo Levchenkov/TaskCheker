@@ -243,8 +243,9 @@ namespace TaskChecker.Web.Controllers
         }
 
         [HttpPost, ValidateInput(false)]
-        public ActionResult ExerciseSubmission(int exerciseId, string content, bool isStatic, string typeName, string methodName)
+        public ActionResult ExerciseSubmission(int exerciseId, string content, string typeName, string methodName)
         {
+            bool isStatic = false; //we can call static method with instance
             if (string.IsNullOrEmpty(content) 
                 || string.IsNullOrEmpty(typeName) 
                 || string.IsNullOrEmpty(methodName))
@@ -260,10 +261,17 @@ namespace TaskChecker.Web.Controllers
             }
 
             var submission = SaveSubmission(exercise, content, isStatic, typeName, methodName);
-            var taskFunction = GetTaskFunction(content, isStatic, typeName, methodName);
-            var testResults = RunTests(exercise, taskFunction);
-
-            submission = UpdateSubmission(submission, testResults);
+            var taskFunctionResult = GetTaskFunction(content, isStatic, typeName, methodName);
+            if(taskFunctionResult.Exception == null)
+            {
+                var taskFunction = taskFunctionResult.TaskFunction;
+                var testResults = RunTests(exercise, taskFunction);
+                submission = UpdateSubmission(submission, testResults);
+            }
+            else
+            {
+                submission = UpdateSubmission(submission, taskFunctionResult.Exception);
+            }            
 
             return RedirectToAction("Submission", new {Id = submission.Id });
         }
@@ -323,6 +331,23 @@ namespace TaskChecker.Web.Controllers
             return submission;
         }
 
+        private Submission UpdateSubmission(Submission submission, Exception exception)
+        {
+            submission.TestResults = new List<ExerciseTestResult>
+            {
+                new ExerciseTestResult
+                {
+                    IsPassed = false,
+                    Information = exception.Message
+                }
+            };
+
+            submission.IsTested = false;
+
+            db.SaveChanges();
+            return submission;
+        }
+
         private static Exception Unwrap(Exception sourceException)
         {
             Exception exception = sourceException;
@@ -340,35 +365,42 @@ namespace TaskChecker.Web.Controllers
             return exception;
         }
 
-        private TaskFunction GetTaskFunction(string content, bool isStatic, string typeName, string methodName)
+        private (TaskFunction TaskFunction, Exception Exception) GetTaskFunction(string content, bool isStatic, string typeName, string methodName)
         {
-            var creator = new AssemblyCreator(content);
-            var assembler = creator.CreateAssembly();
-            var type = assembler.GetType(typeName);
-            if (type == null)
+            try
             {
-                throw new NotSupportedException();
-            }
+                var creator = new AssemblyCreator(content);
+                var assembler = creator.CreateAssembly();
+                var type = assembler.GetType(typeName);
+                if (type == null)
+                {
+                    throw new NotSupportedException($"Type {typeName} not found.");
+                }
 
-            var method = type.GetMethod(methodName);
-            if (method == null)
-            {
-                throw new NotSupportedException();
-            }
+                var method = type.GetMethod(methodName);
+                if (method == null)
+                {
+                    throw new NotSupportedException($"Method {methodName} not found.");
+                }
 
-            TaskFunction taskFunction;
-            if (isStatic)
-            {
-                taskFunction = (parameters) => method.Invoke(null, parameters);
-            }
-            else
-            {
-                var instance = Activator.CreateInstance(type);
-                taskFunction = (parameters) => method.Invoke(instance, parameters);
-            }
+                TaskFunction taskFunction;
+                if (isStatic)
+                {
+                    taskFunction = (parameters) => method.Invoke(null, parameters);
+                }
+                else
+                {
+                    var instance = Activator.CreateInstance(type);
+                    taskFunction = (parameters) => method.Invoke(instance, parameters);
+                }
 
-            
-            return taskFunction;
+
+                return (taskFunction, null);
+            }
+            catch(Exception exception)
+            {
+                return (null, exception);
+            }
         }
 
         private IList<TestResult> RunTests(Exercise exercise, TaskFunction taskFunction)

@@ -5,6 +5,8 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using con = System.Console;
 
 namespace TaskChecker
 {
@@ -27,9 +29,8 @@ namespace TaskChecker
             var references = new MetadataReference[]
             {
                 MetadataReference.CreateFromFile(typeof(Object).Assembly.Location), // System
-                //MetadataReference.CreateFromFile(typeof(Console).Assembly.Location),
                 MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location), // System.Linq
-                MetadataReference.CreateFromFile(typeof(List<>).Assembly.Location)
+                MetadataReference.CreateFromFile(typeof(List<>).Assembly.Location) // System.Collections.Generic, mscorlib
             };
 
             var assemblyName = $"GeneratedAssembly-{Guid.NewGuid():N}";
@@ -39,6 +40,8 @@ namespace TaskChecker
                 references,
                 new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
+            ThrowIfContainsConsoleReadLine(tree, compilation);
+
             using (var stream = new MemoryStream())
             {
                 var emitResult = compilation.Emit(stream);
@@ -47,11 +50,9 @@ namespace TaskChecker
                 {
                     var errors = emitResult.Diagnostics.Where(x => x.IsWarningAsError || x.Severity == DiagnosticSeverity.Error);
 
-                    foreach (var error in errors)
-                    {
-                        Console.Error.WriteLine("{0}: {1}", error.Id, error.GetMessage());
-                    }
-                    throw new NotSupportedException();
+                    var message = string.Join("\n", errors.Select(x => $"{x.Id}: {x.GetMessage()}"));
+                    
+                    throw new NotSupportedException(message);
                 }
                 else
                 {
@@ -59,6 +60,29 @@ namespace TaskChecker
                     return Assembly.Load(stream.ToArray());
                 }
             }
+        }
+
+        private void ThrowIfContainsConsoleReadLine(SyntaxTree syntaxTree, CSharpCompilation compilation)
+        {
+            var model = compilation.GetSemanticModel(syntaxTree);
+            var invocationSyntaxes = syntaxTree.GetRoot().DescendantNodes().OfType<InvocationExpressionSyntax>();
+
+            foreach (var invocationSyntax in invocationSyntaxes)
+            {
+                var symbolInfo = model.GetSymbolInfo(invocationSyntax);
+                var methodName = $"{symbolInfo.Symbol.ContainingType.ToString()}.{symbolInfo.Symbol.Name}";
+                if (GetDeprecatedMethods().Contains(methodName))
+                {
+                    throw new NotSupportedException($"Method {methodName} is not allowed.");
+                }
+            }
+        }
+
+        private IEnumerable<string> GetDeprecatedMethods()
+        {
+            yield return "System.Console.Read";
+            yield return "System.Console.ReadKey";
+            yield return "System.Console.ReadLine";
         }
     }
 }

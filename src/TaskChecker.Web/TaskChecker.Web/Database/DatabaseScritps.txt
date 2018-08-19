@@ -18,3 +18,23 @@ insert into [dbo].[LabWorkCourseClasses] (LabWork_Id, CourseClass_Id) values (1,
   (Student_Id, CourseClass_Id) values
   (1, 1)
 
+  source code:
+  empty +
+  qwe +
+  compile error +
+  another type +
+  another method +
+  static +
+  not static +
+  no parameters +
+  not enaf parametrs +
+  another parameter type +
+  another return type +
+  return void +
+  executing exception +/- should split test exception and executing
+  console read line +
+  static using console +
+  alias using console +
+  test not found by name: TestRunner:31
+  show that no tests for exercise
+  list of not allowed methods and types
