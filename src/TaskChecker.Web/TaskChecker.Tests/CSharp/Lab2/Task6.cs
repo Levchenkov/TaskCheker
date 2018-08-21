@@ -28,8 +28,7 @@ namespace TaskChecker.Tests.CSharp.Lab2
             functionReturn.Should().BeOfType<int[]>();
 
             var result = (int[])functionReturn;
-            result.Should().HaveCount(1);
-            result.Should().Contain(1);
+            result.Should().HaveCount(0);
         }
 
         public void Test3_Sequence(TaskFunction taskFunction)

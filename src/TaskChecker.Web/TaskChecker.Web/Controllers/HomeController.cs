@@ -190,7 +190,7 @@ namespace TaskChecker.Web.Controllers
                 mark = 0;
             }
             else{
-                mark = (passedTests / totalTests) * submission.Exercise.Value;
+                mark = submission.Exercise.Value * passedTests / totalTests;
             }
 
             var exerciseResult = new ExerciseResult

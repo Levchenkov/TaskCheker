@@ -17,21 +17,5 @@ namespace TaskChecker.Tests.CSharp.Lab2
             var result = (string)functionReturn;
             result.Should().Be("*****6789");
         }
-
-        public void Test2_EmptyString(TaskFunction taskFunction)
-        {
-            var functionReturn = taskFunction(new object[] { string.Empty });
-            functionReturn.Should().BeOfType<string>();
-
-            var result = (string)functionReturn;
-            result.Should().Be("");
-        }
-
-        public void Test3_NullString(TaskFunction taskFunction)
-        {
-            var functionReturn = taskFunction(new object[] { (string)null });
-
-            functionReturn.Should().BeNull();
-        }
     }
 }
