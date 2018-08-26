@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lab5;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -44,7 +45,9 @@ namespace TaskChecker.Web.Controllers
             {
                 return HttpNotFound();
             }
-            var labWorkResult = db.LabWorkResults.FirstOrDefault(x => x.LabWork.Id == labWork.Id && x.Student.User.UserName == User.Identity.Name);
+            var labWorkResult = db.LabWorkResults
+                .Include(x => x.ExerciseResults.Select(y => y.Exercise))
+                .FirstOrDefault(x => x.LabWork.Id == labWork.Id && x.Student.User.UserName == User.Identity.Name);
 
             var viewModel = new LabWorkViewModel
             {
@@ -219,7 +222,9 @@ namespace TaskChecker.Web.Controllers
                 throw new NotSupportedException();
             }
 
-            var labWorkResult = db.LabWorkResults.FirstOrDefault(x => x.LabWork.Id == exercise.LabWork.Id);
+            var labWorkResult = db.LabWorkResults.FirstOrDefault(
+                x => x.LabWork.Id == exercise.LabWork.Id
+                && x.Student.Id == exerciseResult.Student.Id);
 
             if(labWorkResult == null)
             {
@@ -369,7 +374,7 @@ namespace TaskChecker.Web.Controllers
         {
             try
             {
-                var creator = new AssemblyCreator(content);
+                var creator = new AssemblyCreator(content, new[] { typeof(ILogger)});
                 var assembler = creator.CreateAssembly();
                 var type = assembler.GetType(typeName);
                 if (type == null)

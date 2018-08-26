@@ -26,7 +26,7 @@ else
             <th></th>
         </tr>
 
-        @foreach (LabWork item in Model.LabWorks)
+        @foreach (LabWork item in Model.LabWorks.Where(x => x.IsOpened))
         {
             <tr>
                 <td>

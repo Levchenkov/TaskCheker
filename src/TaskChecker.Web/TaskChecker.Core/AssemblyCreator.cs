@@ -12,9 +12,12 @@ namespace TaskChecker
 {
     public class AssemblyCreator
     {
-        public AssemblyCreator(string content)
+        private readonly IEnumerable<Type> types;
+
+        public AssemblyCreator(string content, params Type[] types)
         {
             Content = content;
+            this.types = types;
         }
 
         public string Content
@@ -26,12 +29,14 @@ namespace TaskChecker
         {
             var tree = CSharpSyntaxTree.ParseText(Content);
 
-            var references = new MetadataReference[]
+            var references = new List<MetadataReference>
             {
                 MetadataReference.CreateFromFile(typeof(Object).Assembly.Location), // System
                 MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location), // System.Linq
-                MetadataReference.CreateFromFile(typeof(List<>).Assembly.Location) // System.Collections.Generic, mscorlib
+                MetadataReference.CreateFromFile(typeof(List<>).Assembly.Location), // System.Collections.Generic, mscorlib
             };
+
+            references.AddRange(types.Select(x => MetadataReference.CreateFromFile(x.Assembly.Location)));
 
             var assemblyName = $"GeneratedAssembly-{Guid.NewGuid():N}";
             var compilation = CSharpCompilation.Create(
