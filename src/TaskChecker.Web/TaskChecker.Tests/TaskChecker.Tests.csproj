@@ -68,6 +68,10 @@
     <Compile Include="CSharp\Lab5\Task2.cs" />
     <Compile Include="CSharp\Lab5\Task2.Task3.Interfaces.cs" />
     <Compile Include="CSharp\Lab5\Task3.cs" />
+    <Compile Include="CSharp\Lab6\Task1.cs" />
+    <Compile Include="CSharp\Lab6\Task1.Interfaces.cs" />
+    <Compile Include="CSharp\Lab6\Task2.cs" />
+    <Compile Include="CSharp\Lab6\Task2.Interfaces.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
