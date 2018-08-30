@@ -9,14 +9,14 @@ namespace TaskChecker.Tests.CSharp.Lab5
         public void Test1_OnePushOnePop_ShouldBeEmpty(TaskFunction taskFunction)
         {
             var queue = CheckAndGet(taskFunction);
-            queue.IsEmpty.Should().BeTrue();
-            queue.Count.Should().Be(0);
+            queue.IsEmpty.Should().BeTrue("Initialized collection should be empty.");
+            queue.Count.Should().Be(0, "Initialized collection should have count 0.");
 
             queue.Enqueue(1);
-            queue.Peek().Should().Be(1);
-            queue.Dequeue().Should().Be(1);
-            queue.IsEmpty.Should().BeTrue();
-            queue.Count.Should().Be(0);
+            queue.Peek().Should().Be(1, "Enqueue element 1, Peek should return 1.");
+            queue.Dequeue().Should().Be(1, "Enqueue element 1, Dequeue should return 1.");
+            queue.IsEmpty.Should().BeTrue("Enqueue element 1, Denqueue element 1. Collection should be empty.");
+            queue.Count.Should().Be(0, "Enqueue element 1, Denqueue element 1. Collection should have count 0.");
         }
 
         public void Test2_ManyPushAndPop_ShouldBeEqual(TaskFunction taskFunction)
