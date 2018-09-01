@@ -11,88 +11,104 @@
 {
     @Html.HiddenFor(x => x.Id)
     @Html.Hidden("IsFinal", !Model.IsFinal)
-<div>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
+    <div>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Id)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Id)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Id)
+            </dd>
 
-        <dt>
-            @Html.DisplayName("Tested")
-        </dt>
+            <dt>
+                @Html.DisplayName("Tested")
+            </dt>
 
-        <dd>
-            @(Model.IsTested ? "Yes" : "No")
-        </dd>
+            <dd>
+                @(Model.IsTested ? "Yes" : "No")
+            </dd>
 
-        <dt>
-            @Html.DisplayName("Final")
-        </dt>
+            <dt>
+                @Html.DisplayName("Final")
+            </dt>
 
-        <dd>
-            @(Model.IsFinal ? "Yes" : "No")
-            <input type="submit"
-                   value="@(Model.IsFinal ? "Reset Answer": "Mark as Final Answer")"
-                   class="btn btn-link"
-                   style="top: -3px; position: relative;" />
-        </dd>
+            <dd>
+                @(Model.IsFinal ? "Yes" : "No")
+                <input type="submit"
+                       value="@(Model.IsFinal ? "Reset Answer": "Mark as Final Answer")"
+                       class="btn btn-link"
+                       style="top: -3px; position: relative;" />
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Created)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Created)
-        </dd>
-        <dt>
-            <a class="btn btn-link"
-               style="padding-right: 0; font-weight: bold;"
-               role="link"
-               data-toggle="collapse"
-               href="#collapseCode"
-               aria-expanded="false"
-               aria-controls="collapseCode">Show Source Code</a>
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Created)
+            </dd>
+            <dt>
+                <a class="btn btn-link"
+                   style="padding-right: 0; font-weight: bold;"
+                   role="link"
+                   data-toggle="collapse"
+                   href="#collapseCode"
+                   aria-expanded="false"
+                   aria-controls="collapseCode">Show Source Code</a>
+            </dt>
 
 
-        <dd>
-            <div class="collapse" id="collapseCode">
-                <div class="well" style="white-space: pre-wrap">@Html.DisplayFor(model => model.SubmittedContent.Content)</div>
-            </div>
-        </dd>
+            <dd >
+                <div class="collapse" id="collapseCode">
+                    <div style="position: relative; height: 400px">
+                        <div id="sourceCode" style="position: absolute; top: 0; left: 0; width: 100%; height: 400px;">@Model.SubmittedContent.Content</div>
+                    </div>
+                </div>
+            </dd>
 
-    </dl>
+        </dl>
 
-    @Html.ActionLink("Back to Exercise", "Exercise", new { Id = Model.Exercise.Id })
+        @Html.ActionLink("Back to Exercise", "Exercise", new { Id = Model.Exercise.Id })
 
-    <h4>Test execution results:</h4>
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayName("Test is Passed")
-            </th>
-            <th>
-                @Html.DisplayName("Information")
-            </th>
-            <th></th>
-        </tr>
-
-        @foreach (var item in Model.TestResults)
-        {
+        <h4>Test execution results:</h4>
+        <table class="table">
             <tr>
-                <td>
-                    @(item.IsPassed ? "Yes" : "No")
-                </td>
-                <td style="white-space: pre-wrap">@Html.DisplayFor(modelItem => item.Information)</td>
+                <th>
+                    @Html.DisplayName("Test is Passed")
+                </th>
+                <th>
+                    @Html.DisplayName("Information")
+                </th>
+                <th></th>
             </tr>
-        }
 
-    </table>
+            @foreach (var item in Model.TestResults)
+            {
+                <tr>
+                    <td>
+                        @(item.IsPassed ? "Yes" : "No")
+                    </td>
+                    <td style="white-space: pre-wrap">@Html.DisplayFor(modelItem => item.Information)</td>
+                </tr>
+            }
 
-</div>
+        </table>
+
+    </div>
+}
+
+@section Scripts{
+    @Scripts.Render("~/bundles/ace")
+    <script>
+        window.sourceCode = ace.edit("sourceCode");
+        window.sourceCode.setOptions({
+            fixedWidthGutter: true,
+            showPrintMargin: false,
+            readOnly: true
+        });
+        window.sourceCode.setTheme("ace/theme/textmate");
+        window.sourceCode.session.setMode("ace/mode/csharp");
+    </script>
 }

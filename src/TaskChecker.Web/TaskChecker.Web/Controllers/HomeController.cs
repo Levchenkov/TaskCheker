@@ -248,25 +248,25 @@ namespace TaskChecker.Web.Controllers
         }
 
         [HttpPost, ValidateInput(false)]
-        public ActionResult ExerciseSubmission(int exerciseId, string content, string typeName, string methodName)
+        public ActionResult ExerciseSubmission(ExerciseSubmissionViewModel viewModel)
         {
             bool isStatic = false; //we can call static method with instance
-            if (string.IsNullOrEmpty(content) 
-                || string.IsNullOrEmpty(typeName) 
-                || string.IsNullOrEmpty(methodName))
+            if (string.IsNullOrEmpty(viewModel.Content) 
+                || string.IsNullOrEmpty(viewModel.TypeName) 
+                || string.IsNullOrEmpty(viewModel.MethodName))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var exercise = db.Exercises.FirstOrDefault(x => x.Id == exerciseId);
+            var exercise = db.Exercises.FirstOrDefault(x => x.Id == viewModel.ExerciseId);
 
             if (exercise == null)
             {
                 return HttpNotFound();
             }
 
-            var submission = SaveSubmission(exercise, content, isStatic, typeName, methodName);
-            var taskFunctionResult = GetTaskFunction(content, isStatic, typeName, methodName);
+            var submission = SaveSubmission(exercise, isStatic, viewModel);
+            var taskFunctionResult = GetTaskFunction(isStatic, viewModel);
             if(taskFunctionResult.Exception == null)
             {
                 var taskFunction = taskFunctionResult.TaskFunction;
@@ -276,12 +276,12 @@ namespace TaskChecker.Web.Controllers
             else
             {
                 submission = UpdateSubmission(submission, taskFunctionResult.Exception);
-            }            
+            }
 
-            return RedirectToAction("Submission", new {Id = submission.Id });
+            return Json(Url.Action("Submission", "Home", new { Id = submission.Id }, Request.Url.Scheme));
         }
 
-        private Submission SaveSubmission(Exercise exercise, string content, bool isStatic, string typeName, string methodName)
+        private Submission SaveSubmission(Exercise exercise, bool isStatic, ExerciseSubmissionViewModel viewModel)
         {
             var currentStudent = db.Students.FirstOrDefault(x => x.User.UserName == User.Identity.Name);
             var submission = new Submission
@@ -291,10 +291,10 @@ namespace TaskChecker.Web.Controllers
                 Student = currentStudent,
                 SubmittedContent = new SubmittedContent
                 {
-                    Content = content,
+                    Content = viewModel.Content,
                     IsStatic = isStatic,
-                    TypeName = typeName,
-                    MethodName = methodName
+                    TypeName = viewModel.TypeName,
+                    MethodName = viewModel.MethodName
                 }
             };
 
@@ -370,22 +370,22 @@ namespace TaskChecker.Web.Controllers
             return exception;
         }
 
-        private (TaskFunction TaskFunction, Exception Exception) GetTaskFunction(string content, bool isStatic, string typeName, string methodName)
+        private (TaskFunction TaskFunction, Exception Exception) GetTaskFunction(bool isStatic, ExerciseSubmissionViewModel viewModel)
         {
             try
             {
-                var creator = new AssemblyCreator(content, new[] { typeof(ILogger)});
+                var creator = new AssemblyCreator(viewModel.Content, new[] { typeof(ILogger)});
                 var assembler = creator.CreateAssembly();
-                var type = assembler.GetType(typeName);
+                var type = assembler.GetType(viewModel.TypeName);
                 if (type == null)
                 {
-                    throw new NotSupportedException($"Type {typeName} not found.");
+                    throw new NotSupportedException($"Type {viewModel.TypeName} not found.");
                 }
 
-                var method = type.GetMethod(methodName);
+                var method = type.GetMethod(viewModel.MethodName);
                 if (method == null)
                 {
-                    throw new NotSupportedException($"Method {methodName} not found.");
+                    throw new NotSupportedException($"Method {viewModel.MethodName} not found.");
                 }
 
                 TaskFunction taskFunction;

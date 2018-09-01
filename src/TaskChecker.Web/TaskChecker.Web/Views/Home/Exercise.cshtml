@@ -50,80 +50,57 @@
 @if (Model.Exercise.ExerciseTests.Count > 0)
 {
     <h4>You can Submit Answer below:</h4>
-    using (Html.BeginForm("ExerciseSubmission", "Home", FormMethod.Post))
-    {
-        <div class="form-horizontal">
-            <input type="hidden" id="ExerciseId" name="ExerciseId" value="@Model.Exercise.Id" />
-            @*// we can call static method with instance*@
-            @*<div class="form-group">
-                    @Html.LabelFor(x => x.Exercise.IsStatic, "Method is static", htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        <div class="checkbox">
-                            @Html.EditorFor(model => model.Exercise.IsStatic, null, "IsStatic")
-                            @Html.ValidationMessageFor(model => exercise.IsStatic, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                </div>*@
 
-            <div class="form-group">
-                @Html.LabelFor(model => exercise.TypeName, "Type Name", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(
-                        model => exercise.TypeName,
-                        null,
-                        "TypeName",
-                        new {
-                            htmlAttributes = new {
-                                @class = "form-control",
-                                data_val = "true",
-                                data_val_required = "The Type Name field is required."
-                            }
-                        })
-                    @Html.ValidationMessage("TypeName", "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => exercise.MethodName, "Method Name", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(
-                        model => exercise.MethodName,
-                        null,
-                        "MethodName",
-                        new {
-                            htmlAttributes = new {
-                                @class = "form-control",
-                                data_val = "true",
-                                data_val_required = "The Method Name field is required."
-                            }
-                        })
-                    @Html.ValidationMessage("MethodName", "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.Label("Content", "Source Code", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.TextArea(
-                        "Content",
-                        null,
-                        15,
-                        10,
-                        new {
+    <div class="form-horizontal">
+        <input type="hidden" id="ExerciseId" name="ExerciseId" value="@Model.Exercise.Id" />
+        <div class="form-group">
+            @Html.LabelFor(model => exercise.TypeName, "Type Name", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(
+                    model => exercise.TypeName,
+                    null,
+                    "TypeName",
+                    new {
+                        htmlAttributes = new {
                             @class = "form-control",
-                            style = "max-width: none;",
                             data_val = "true",
-                            data_val_required = "The Source Code field is required."
-                        })
-                    @Html.ValidationMessage("Content", "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Check Answer" class="btn btn-primary" />
-                </div>
+                            data_val_required = "The Type Name field is required."
+                        }
+                    })
+                @Html.ValidationMessage("TypeName", "", new { @class = "text-danger" })
             </div>
         </div>
-    }
+
+        <div class="form-group">
+            @Html.LabelFor(model => exercise.MethodName, "Method Name", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(
+                    model => exercise.MethodName,
+                    null,
+                    "MethodName",
+                    new {
+                        htmlAttributes = new {
+                            @class = "form-control",
+                            data_val = "true",
+                            data_val_required = "The Method Name field is required."
+                        }
+                    })
+                @Html.ValidationMessage("MethodName", "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group" style="height: 400px">
+            @Html.Label("Content", "Source Code", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div id="sourceCode" style="position: absolute; top: 0; left: 0; width: 100%; height: 400px;"></div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input id="submit" type="submit" value="Check Answer" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
 }
 
 <h4>Your previous answers:</h4>
@@ -176,4 +153,42 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/ace")
+
+    <script>
+        $('#submit').on('click', function (event) {
+            event.preventDefault();
+
+            var data = {
+                exerciseId: $('#ExerciseId').val(),
+                content: window.sourceCode.getValue(),
+                typeName: $('#TypeName').val(),
+                methodName: $('#MethodName').val()
+            };
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("ExerciseSubmission", "Home")',
+                content: "application/json; charset=utf-8",
+                dataType: "json",
+                data: data,
+                success: function (response) {
+                    window.location.href = response;
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    // TODO: Show error
+                }
+            });
+        });
+    </script>
+
+    <script>
+        window.sourceCode = ace.edit("sourceCode");
+        window.sourceCode.setOptions({
+            fixedWidthGutter: true,
+            showPrintMargin: false
+        });
+        window.sourceCode.setTheme("ace/theme/textmate");
+        window.sourceCode.session.setMode("ace/mode/csharp");
+    </script>
 }

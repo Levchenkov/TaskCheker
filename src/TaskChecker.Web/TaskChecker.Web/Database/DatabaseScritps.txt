@@ -4,10 +4,6 @@ insert into [dbo].[AspNetRoles] (Id, Name) values (1, 'Admin'), (2, 'Student')
 -- Add user roles
 insert into [dbo].[AspNetUserRoles] (UserId, RoleId) values('8c700e27-3e58-4bdc-b650-c7750a3a3445', 1)
 
--- Add lab works for course
-insert into [dbo].[LabWorkCourseClasses] (LabWork_Id, CourseClass_Id) values (1, 1)
-
-
 -- Assing ASPUser to student
   update [dbo].[Students]
   set User_Id = '8c700e27-3e58-4bdc-b650-c7750a3a3445'
