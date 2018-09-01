@@ -1,4 +1,5 @@
-﻿@model IEnumerable<TaskChecker.Web.Models.Entities.ExerciseResult>
+﻿@using System.Web.Mvc.Html
+@model IEnumerable<TaskChecker.Web.Models.Entities.ExerciseResult>
 
 @{
     ViewBag.Title = "Results";
@@ -23,22 +24,23 @@
         </th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Id)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Submission.Id)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Student.FullName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Mark)
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.ActionLink(item.Submission.Id.ToString(), "Submission", "Home", new { Id = item.Submission.Id }, null)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Student.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Mark)
+            </td>
+        </tr>
+    }
 
 </table>
 
