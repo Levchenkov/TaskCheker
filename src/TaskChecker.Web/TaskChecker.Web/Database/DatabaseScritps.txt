@@ -53,3 +53,10 @@ insert into [dbo].[StudentCourseClasses]
   test not found by name: TestRunner:31
   
   list of not allowed methods and types
+
+  results:
+  название задачи
+  ссылка на след задачу
+  чекбокс о том, что результат перенесен в таблицу и проверен
+
+  отладка тестов

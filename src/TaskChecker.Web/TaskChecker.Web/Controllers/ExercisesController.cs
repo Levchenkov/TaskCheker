@@ -25,7 +25,12 @@ namespace TaskChecker.Web.Controllers
         public ActionResult Results(int id)
         {
             ViewBag.ExerciseId = id;
-            var results = db.ExerciseResults.Include(x => x.Student).Include(x => x.Submission).Where(x => x.Exercise.Id == id);
+            var results = db.ExerciseResults
+                .Include(x => x.Student)
+                .Include(x => x.Submission)
+                .Where(x => x.Exercise.Id == id)
+                .ToList()
+                .OrderBy(x => x.Student.FullName);
 
             return View(results);
         }
