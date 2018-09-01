@@ -81,9 +81,18 @@ namespace TaskChecker.Web.Controllers
 
         public ActionResult Submission(int id)
         {
-            var submission = db.Submissions.Include(x => x.Exercise).Include(x => x.SubmittedContent).FirstOrDefault(x => x.Id == id);
+            var submission = db.Submissions
+                .Include(x => x.Student.User)
+                .Include(x => x.Exercise)
+                .Include(x => x.SubmittedContent)
+                .FirstOrDefault(x => x.Id == id);
 
             if (submission == null)
+            {
+                return HttpNotFound();
+            }
+
+            if(!(submission.Student.User.UserName == User.Identity.Name || User.IsInRole("Admin")))
             {
                 return HttpNotFound();
             }
