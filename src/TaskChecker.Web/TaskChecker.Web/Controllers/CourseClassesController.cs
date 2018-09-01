@@ -72,6 +72,17 @@ namespace TaskChecker.Web.Controllers
             {
                 return HttpNotFound();
             }
+
+            var selectedLabWorks = courseClass.LabWorks.Select(x => x.Id).ToArray();
+
+            var labWorks = db.LabWorks.Select(x => new
+            {
+                Id = x.Id,
+                Value = x.Name
+            }).ToList();
+
+            ViewBag.LabWorks = new MultiSelectList(labWorks, "Id", "Value", selectedLabWorks);
+
             return View(courseClass);
         }
 
@@ -80,12 +91,26 @@ namespace TaskChecker.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Description,IsOpened")] CourseClass courseClass)
+        public ActionResult Edit([Bind(Include = "Id,Name,Description,IsOpened")] CourseClass courseClass, int[] labWorkIds)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(courseClass).State = EntityState.Modified;
                 db.SaveChanges();
+
+                courseClass = db.CourseClasses.Include(x => x.LabWorks).FirstOrDefault(x => x.Id == courseClass.Id);
+
+                if (labWorkIds == null)
+                {
+                    courseClass.LabWorks.Clear();
+                }
+                else
+                {
+                    var selectedLabWorks = db.LabWorks.Where(x => labWorkIds.Contains(x.Id)).ToList();
+                    courseClass.LabWorks = selectedLabWorks;
+                }
+                db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
             return View(courseClass);
