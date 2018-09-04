@@ -60,3 +60,5 @@ insert into [dbo].[StudentCourseClasses]
   чекбокс о том, что результат перенесен в таблицу и проверен
 
   отладка тестов
+
+  resubmit

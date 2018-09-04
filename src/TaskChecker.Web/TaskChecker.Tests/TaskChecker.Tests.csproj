@@ -78,6 +78,7 @@
     <Compile Include="CSharp\Lab7\Task3.cs" />
     <Compile Include="CSharp\Lab7\Task4.cs" />
     <Compile Include="CSharp\Lab7\Task5.cs" />
+    <Compile Include="CSharp\Lab7\Task6.cs" />
     <Compile Include="CSharp\TaskFunctionExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
