@@ -72,6 +72,13 @@
     <Compile Include="CSharp\Lab6\Task1.Interfaces.cs" />
     <Compile Include="CSharp\Lab6\Task2.cs" />
     <Compile Include="CSharp\Lab6\Task2.Interfaces.cs" />
+    <Compile Include="CSharp\Lab7\Interfaces.cs" />
+    <Compile Include="CSharp\Lab7\Task1.cs" />
+    <Compile Include="CSharp\Lab7\Task2.cs" />
+    <Compile Include="CSharp\Lab7\Task3.cs" />
+    <Compile Include="CSharp\Lab7\Task4.cs" />
+    <Compile Include="CSharp\Lab7\Task5.cs" />
+    <Compile Include="CSharp\TaskFunctionExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
