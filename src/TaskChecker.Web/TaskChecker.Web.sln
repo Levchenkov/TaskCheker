@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskChecker.Core", "TaskChe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskChecker.Tests", "TaskChecker.Tests\TaskChecker.Tests.csproj", "{8C15C7DD-BBE8-458F-B3E7-BAF8309CD398}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskChecker.Debug", "TaskChecker.Debug\TaskChecker.Debug.csproj", "{973876EA-39AF-4F3F-B990-F2AE97A13D14}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{8C15C7DD-BBE8-458F-B3E7-BAF8309CD398}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C15C7DD-BBE8-458F-B3E7-BAF8309CD398}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C15C7DD-BBE8-458F-B3E7-BAF8309CD398}.Release|Any CPU.Build.0 = Release|Any CPU
+		{973876EA-39AF-4F3F-B990-F2AE97A13D14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{973876EA-39AF-4F3F-B990-F2AE97A13D14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{973876EA-39AF-4F3F-B990-F2AE97A13D14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{973876EA-39AF-4F3F-B990-F2AE97A13D14}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
